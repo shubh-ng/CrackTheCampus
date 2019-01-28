@@ -1,0 +1,309 @@
+#Week 1 MCQ's#
+
+Technical Questions (15 MCQs in 30 Mins)
+1. What is the output of this C code?
+void main()
+{
+  char *s="\125s\n";
+  printf("%d",sizeof(s));
+}
+
+a) 4 
+b) 6
+c) 2
+d) 1 
+
+Explanation : 
+Since s is a pointer variable, its size is 4 bytes(32 bit machine) irrespective of it data type. In a 16 bit machine the correct ans is 2 bytes and so on.
+
+2. What is the output of this C code?
+void main()
+{
+  unsigned i=1; 
+  signed j=-1; 
+  if(i<j)
+    printf("less");
+  else
+    if(i>j)
+      printf("greater");
+  else
+     if(i==j)
+        printf("equal");
+}
+
+a) less
+b) greater
+c) equal
+d) Compilation error
+
+Explanation : 
+When you compare an int and an unsigned int, the int is converted to unsigned int. Now according to 'C' standard, the newly converted unsigned int has the largest possible value of int in it. (In a 16 bit computer, this value is 65535). Please be noted that this applies only when the number is negative.
+
+3. How many syntax errors in below code ?
+int f();
+void main()
+{
+  f(1);
+  f(1,2);
+  f(1,2,3);
+}
+f(int i,int j,int k)
+{
+  printf("%d %d %d\n",i,j,k);
+}
+
+a) 1
+b) 2
+c) 3
+d) None
+
+Explanation : 
+If parameter is not passed to function, C prints garbage values. Hence this code runs without errors. However it is always recommended to declare the function with its actual parameters to prevent garbage value passing to functions.
+
+4. What is the output of this C code?
+void main()
+{
+  int i;
+  char a[]="String";
+  char *p="New Sring";
+  char *Temp;
+  Temp=a;			  //Line number 7//
+  a=malloc(strlen(p) + 1); //Line number 8//
+  strcpy(a,p); 		 //Line number 9//
+  p = malloc(strlen(Temp) + 1);
+  strcpy(p,Temp);
+  printf("(%s, %s)",a,p);
+  free(p);
+  free(a);
+}
+
+a) Swap contents of p & a and print:(New string, string)
+b) Generate compilation error in line number 8
+c) Generate compilation error in line number 7
+d) Generate compilation error in line number 9
+
+Explanation : 
+Since a is an array type and memory is already allocated to an array when it is define, so we cannot assign new memory to it. Though if ‘a’ would be a pointer type then this code will work.
+
+5. What is the output of this C code?
+
+char *gxxx()
+{
+  static char xxx[1024];
+  return xxx;
+}
+main()
+{
+  char *g="string";
+  strcpy(gxxx(),g);
+  g = gxxx();
+  strcpy(g,"oldstring");
+  printf("The string is : %s",gxxx());
+}
+
+a) The string is : string
+b) The string is :oldstring
+c) Run time error/Core dump
+d) Syntax error during compilation
+e) None of these
+
+Explanation : 
+Since character pointer and function pointer shares the same address (g=gxxx()), hence the value at g is now also the value of gxxx().
+    
+6. What is the output of this C code?
+main()
+{
+  char *ptr = "SD college";
+  ptr++;
+  printf("%s\n",ptr);
+}
+
+a) SD college
+b) D college
+c) Compile time error
+d) None of the above
+
+Explanation : 
+Pointer is incrementd by one, now it is pointing from D.
+
+
+7. What is the output of this C code?
+#include<stdio.h>
+main(){
+
+      FILE *fp1,*fp2;
+      fp1=fopen("one","w");
+      fp2=fopen("one","w");
+      fputc('A',fp1);
+      fputc('B',fp2);
+      fclose(fp1);
+      fclose(fp2);
+}
+
+
+a) Run time error
+b) No error
+c) Compile time error
+
+
+
+Explanation : 
+NO error, but it will over writes on same file (‘B” overwrites ‘A’) because both file pointer points to same file i.e "one".
+
+8. What is the output of this C code?
+#include <stdio.h>
+int main ()
+{
+  int a = 0, i = 0, b;
+  for (i = 0;i < 5; i++)
+  { 
+    a++;
+    continue;
+  }
+  printf ("%d\n", a);
+}
+
+a) 2
+b) 3
+c) 4
+d) 5
+
+Explanation :
+when ‘i’ is 5, the loop terminates, hence ‘a’ will be 5 after loop terminates.
+
+9. What is the output of this C code?
+#include <stdio.h>
+int main ()
+{
+  int a = 0, i = 0, b;
+  for (i = 0;i < 5; i++)
+  {
+    a++;
+    if (i == 3)
+    break;
+  }
+  printf ("%d\n", a);
+  getchar ();
+}
+
+a) 1
+b) 2
+c) 3
+d) 4
+
+Explanation :
+when loop breaks, a is 4.
+
+10. What is the output of this C code?
+main(){
+    int (*z)()=add;
+    add();
+}
+add(){
+    printf("hi");
+}
+
+a) run time error
+b) compile time error
+c) hi
+d) None of the above
+
+Explanation :
+The compiler not recognizes the ‘add’ in second line of code and treat it as an undeclared variable. If we declare add and change the function name, then the code runs. Please be noted that the ‘add’ in second line is not the function call.
+
+11. What error in compilation of the following code ?
+main()
+{
+
+}
+fun(int i)
+{
+    int i;
+    i = 10;
+    return i;
+}
+
+a) re-declaration of variable
+b) missing bracket in return statement
+c) missing return type in function
+d) None of these
+Explanation :
+Multiple declaration of the same variable in the same function.
+ 
+12. What is the output of this C code?
+#include <stdio.h>
+void m (int p, int q)
+{
+  printf ("%d %d\n", p, q);
+}
+void main ()
+{
+  int a = 6, b = 5;
+  m (a);
+}
+
+a) 6
+b) 6 5
+c) 6 junk value
+d) Compile time error
+
+Explanation :
+Compile error (Too few arguments). If function m is defined after main function, then program will run and print garbage value.
+
+13. What is the output of this C code?
+#include <stdio.h>
+void main ()
+{
+  int x = 0;
+  int *ptr = &5;
+  printf ("%p\n", ptr);
+}
+
+a) 5
+b) Address of 5
+c) Nothing
+d) Compile time error
+
+Explanation :
+Compile error (lvalue required) as we cannot take address of a number (address of ‘&’ operator can be applied to a variable and not a literal).
+    
+14. What is the output of this C code?
+#include <stdio.h>
+int *f ();
+int main ()
+{
+  int *p = f ();
+  printf ("%d\n", *p);
+  return 0;
+}
+int *f ()
+{
+  static int j = 10;
+  return &j;
+}
+
+a) 10
+b) Compile time error
+c) Segmentation fault/runtime crash
+d) Undefined behavior
+
+Explanation :
+Since j is static, the memory of static variable persists after function return. Hence it prints value of j. However, if we remove static, the memory allocated to j would be de allocated after the function return and the program has runtime crash.
+
+15. What is the output of this C code?
+#include <stdio.h>
+void main ()
+{
+  #define max 45
+  max = 32;
+  printf ("%d", max);
+}
+
+a) 32
+b) 45
+c) Compile time error
+d) Varies
+Explanation :
+Requires a data type of max (line 5). If we comment that line, programs run. Please be noted here that #define can be used inside a function.
+         
+//END
