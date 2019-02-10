@@ -1,1 +1,39 @@
+#Week 1 MCQ's#
+Q.1.
+#include <stdio.h>
+int main ()
+{
+  int a = 1, b = 2, c = 3;
+  int *ptr1 = &a;
+  int **sptr = &ptr1;
+  printf ("%d %d\t\t", *ptr1, **sptr);
+  //-Ref
+  printf ("%d %d\n", *ptr1, **sptr);
+}
 
+a) *sptr = &c;
+b) **sptr = &c;
+c) *ptr1 = &c;
+d) None of the mentioned. 
+
+Explanation : 
+sptr is a pointer to a pointer to an integer. Hence we use *sptr to assign address of c (It means that assign c address to that variable to whom sptr points to i.e. ptr1).
+
+Q.2.
+#include <stdio.h>
+void main ()
+{
+int a[2][3] = {1, 2, 3, , 4, 5};
+int i = 0, j = 0;
+for (i = 0; i < 2; i++)
+for (j = 0; j < 3; j++)
+printf ("%d", a[i][j]);
+}
+
+a) 1 2 3 junk 4 5
+b) Compile time errorrror
+c) 1 2 3 0 4 5
+d) 1 2 3 3 4 5
+
+Explanation : 
+An array element is required before a comma.
