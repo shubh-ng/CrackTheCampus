@@ -1,5 +1,4 @@
 #include <stdio.h>
-#define POLYGAMY -1
 
 // getting index of bride with maximum quality and nearer to sam
 int getMaximumQualityIndex(int row[], int col[], int qualityCount[], int index){
@@ -12,8 +11,6 @@ int getMaximumQualityIndex(int row[], int col[], int qualityCount[], int index){
 		}else if(qualityCount[i]==maxQuality){
 			if(row[maxIndex]+col[maxIndex]>row[i]+col[i])
 				maxIndex=i;
-			else if(row[maxIndex]+col[maxIndex]==row[i]+col[i])
-				return POLYGAMY;
 		}
 	}
 	return maxIndex;
@@ -59,10 +56,7 @@ void countQualities(int r, int c,char brideWithQualities[][c], int row[],int col
 		}
 	}
 	int maxQualityBride = getMaximumQualityIndex(row, col, qualityCount, index);
-	if(maxQualityBride != POLYGAMY)
-		printf("%d:%d:%d\n", row[maxQualityBride]+1,col[maxQualityBride]+1,qualityCount[maxQualityBride]);
-	else
-		printf("Sam is polygamy");
+	printf("%d:%d:%d\n", row[maxQualityBride]+1,col[maxQualityBride]+1,qualityCount[maxQualityBride]);
 }
 
 int main()
