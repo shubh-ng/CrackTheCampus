@@ -1,9 +1,6 @@
 #include <stdio.h>
-#include <malloc.h>
+#include <limits.h>
 #include <stdbool.h>
-#define INT_MAX 32767
-#define ROWS 6
-#define COLS 6
 
 int getQualityCount(int rowInput, int colInput, char brideQualities[][colInput], int x, int y)
 {
@@ -11,7 +8,7 @@ int getQualityCount(int rowInput, int colInput, char brideQualities[][colInput],
 	int count=-1;
 	for(i=x-1; i<=x+1; i++){
 		for(j=y-1; j<=y+1; j++){
-			if((i!=0&&j!=0)||i<0||j<0||i<rowInput||j<colInput){
+			if((i!=0&&j!=0)||i<0||j<0||i<rowInput-1||j<colInput-1){
 				if(brideQualities[i][j]=='1')
 					count++;
 			}
@@ -20,94 +17,66 @@ int getQualityCount(int rowInput, int colInput, char brideQualities[][colInput],
 	return count;
 }
 
-int main()
+bool findBride(int rowInput, int colInput,char brideQualities[][colInput])
 {
-	int rowInput,colInput;
-	printf("Enter row and column: ");
-	scanf("%d %d", &rowInput, &colInput);
-
-	// user input
-	// char brideQualities[rowInput][colInput];
-	int i,j;
-	// bool present = false;
-	// for(i=0; i<rowInput; i++){
-	// 	for(j=0; j<colInput; j++){
-	// 		scanf("%c",&brideQualities[i][j]);
-	// 		if((i!=0&&j!=0)&&brideQualities[i][j]=='1')
-	// 			present = true;
-	// 	}
-	// }
-	// if(!present){
-	// 	printf("Invalid input, no brides present\n");
-	// 	return 0;
-	// }
-	// user input
-
-	char brideQualities[ROWS][COLS]={
-
-	// 1:7:3
-	
-		// {'1', '0', '1', '1', '0', '1', '1', '1', '1'},
-		// {'0', '0', '0', '1', '0', '1', '0', '0', '1'}
-	
- 	// 4:4:8
-		// {'1', '0', '0', '0', '0', '0'},
-		// {'0', '0', '0', '0', '0', '0'},
-		// {'0', '0', '1', '1', '1', '0'},
-		// {'0', '0', '1', '1', '1', '0'},
-		// {'0', '0', '1', '1', '1', '0'},
-		// {'0', '0', '0', '0', '0', '0'}
-
-	// polygamy
-		// {'1', '0', '0', '0', '0', '0'},
-		// {'0', '0', '0', '0', '0', '0'},
-		// {'0', '0', '1', '0', '1', '0'},
-		// {'0', '0', '0', '0', '0', '0'},
-		// {'0', '0', '1', '0', '1', '0'},
-		// {'0', '0', '0', '0', '0', '0'}	
-	
-
-	};
-	int qualities[ROWS][COLS]={0};
-
-	brideQualities[0][0]='0';
+    int i,j;    // loop variables
+	bool polygamy=false;
 	int maxQuality=-1,loc=INT_MAX,x=-1,y=-1;
 	for(i=0; i<rowInput; i++){
 		for(j=0; j<colInput; j++){
 			if(brideQualities[i][j]=='1'){
 				int qualityCount = getQualityCount(rowInput, colInput, brideQualities, i, j);
-				qualities[i][j] = qualityCount;
 				int thisLoc = i>j?i:j;
 				if(qualityCount>maxQuality){
 					maxQuality = qualityCount;
 					loc = thisLoc;
 					x=i;
 					y=j;
+					polygamy = false;
 				}else if(qualityCount==maxQuality){
 					if(thisLoc<loc){
 						loc = thisLoc;
 						x=i;
 						y=j;
+					}else if(thisLoc==loc){
+                        polygamy = true;
 					}
 				}
 			}
 		}
 	}
-	qualities[x][y]=0;
+	if(!polygamy)
+        printf("%d:%d:%d\n", x+1,y+1,maxQuality);
+	return polygamy;
+}
+int main()
+{
+    int rowInput,colInput;
+    printf("Enter row and column: ");
+    scanf("%d %d", &rowInput, &colInput);   // row col input
+    int i,j;
+    bool present=false; // any bride is present or not
+    char brideQualities[rowInput][colInput];
+    for(i=0; i<rowInput; i++){
+        for(j=0; j<colInput; j++){
+            if(brideQualities[i][j]=='1'){
+                scanf("%s", &brideQualities[i][j]);
+                present=true;
+            }
+        }
+    }
 
-	// Polygamy check
-	for(i=0; i<rowInput; i++){
-		for(j=0; j<colInput; j++){
-			if(qualities[i][j]==maxQuality){
-				int thisLoc = i>j?i:j;
-				if(thisLoc==loc){
-					printf("POLYGAMY EXISTS\n");
-					return 0;
-				}
-			}
-		}
-	}
-	printf("%d:%d:%d\n", x+1,y+1,maxQuality);
+    if(brideQualities[0][0]=='0')  // if sam is not there, exit
+        return 0;
+    if(!present){   // no bride found, exit
+        printf("Invalid input, no bride found\n");
+        return 0;
+    }
+
+	brideQualities[0][0]='0';   // making sam 0
+	if(!findBride(rowInput, colInput,brideQualities))
+        printf("POLYGAMY EXISTS");
 
 	return 0;
 }
+
